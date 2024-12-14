@@ -1,7 +1,6 @@
 from ply import lex
 import sys
 
-# List of token names
 tokens = (
     'INT',
     'REAL',
@@ -21,7 +20,7 @@ tokens = (
     'ERR'
 )
 
-# Regular expression rules for tokens
+
 def t_REAL(t):
     r'\d+\.\d*|\.\d+'
     return t
@@ -31,7 +30,7 @@ def t_INT(t):
     return t
 
 def t_POW(t):
-    r'\^'  # Changed from ~ to ^
+    r'\^'  
     return t
 
 def t_LIST(t):
@@ -83,10 +82,8 @@ def t_RBRACKET(t):
     r'\]'
     return t
 
-# Ignored characters (whitespace)
 t_ignore = ' \t'
 
-# Error handling rule
 def t_error(t):
     t.type = 'ERR'
     t.value = t.value[0]
@@ -109,9 +106,9 @@ def format_token(token):
     elif token.type == 'EQUALS':
         return '=/='
     elif token.type == 'NOTEQUALS':
-        return '!=/!='  # Changed to !=/!= format
+        return '!=/!='  
     elif token.type == 'POW':
-        return '^/POW'  # Changed from ~/POW to ^/POW
+        return '^/POW'  
     elif token.type == 'LPAREN':
         return '(/LPAREN'
     elif token.type == 'RPAREN':
@@ -143,14 +140,13 @@ def process_file(input_file, output_file):
                 lexer.input(line)
                 tokens = []
                 
-                # Process all tokens in the line
                 while True:
                     tok = lexer.token()
                     if not tok:
                         break
                     tokens.append(format_token(tok))
                 
-                # Write the formatted line to output file
+
                 f.write(' '.join(tokens) + '\n')
     except IOError:
         print(f"Error: Could not write to output file '{output_file}'")
