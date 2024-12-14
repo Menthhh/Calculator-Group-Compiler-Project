@@ -6,7 +6,7 @@ tokens = (
     'INT',
     'REAL',
     'VAR',
-    'LIST',  # Added special token for 'list'
+    'LIST',  
     'PLUS',
     'MINUS',
     'TIMES',
@@ -31,11 +31,11 @@ def t_INT(t):
     return t
 
 def t_POW(t):
-    r'\~'
+    r'\^'  # Changed from ~ to ^
     return t
 
 def t_LIST(t):
-    r'list'  # Special case for 'list'
+    r'list'
     t.type = 'LIST'
     return t
 
@@ -109,9 +109,9 @@ def format_token(token):
     elif token.type == 'EQUALS':
         return '=/='
     elif token.type == 'NOTEQUALS':
-        return '!=/'
+        return '!=/!='  # Changed to !=/!= format
     elif token.type == 'POW':
-        return '~/POW'
+        return '^/POW'  # Changed from ~/POW to ^/POW
     elif token.type == 'LPAREN':
         return '(/LPAREN'
     elif token.type == 'RPAREN':
@@ -121,7 +121,7 @@ def format_token(token):
     elif token.type == 'RBRACKET':
         return ']/RBRACKET'
     elif token.type == 'LIST':
-        return 'list/list'  # Special case for 'list'
+        return 'list/list'
     else:
         return f"{token.value}/{token.type}"
 
