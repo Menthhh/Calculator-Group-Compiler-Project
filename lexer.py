@@ -1,25 +1,15 @@
-from ply import lex
 import sys
+from ply import lex
 
-tokens = (
-    'INT',
-    'REAL',
-    'VAR',
-    'LIST',  
-    'PLUS',
-    'MINUS',
-    'TIMES',
-    'DIVIDE',
-    'EQUALS',
-    'NOTEQUALS',
-    'POW',
-    'LPAREN',
-    'RPAREN',
-    'LBRACKET',
-    'RBRACKET',
-    'ERR'
-)
+def parse_lex_file(lex_file_path):
+    tokens = []
+    with open(lex_file_path, 'r') as f:
+        for line in f:
+            if line.startswith('%token'):
+                tokens.extend(line.split()[1:])
+    return tokens
 
+tokens = parse_lex_file('shadowSparks.lex')
 
 def t_REAL(t):
     r'\d+\.\d*|\.\d+'
@@ -90,7 +80,6 @@ def t_error(t):
     t.lexer.skip(1)
     return t
 
-# Build the lexer
 lexer = lex.lex()
 
 def format_token(token):

@@ -14,7 +14,7 @@ Running the Program:
    a) Open command prompt
    b) Navigate to the program directory
    c) Run the program:
-    python lexer.py input.txt output.tok
+    python lexer.py input.txt shadowSparks.tok
 
 3. Output:
    - The program will generate output.tok file
