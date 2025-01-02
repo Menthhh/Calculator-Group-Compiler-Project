@@ -4,12 +4,10 @@
 
 /* Tokens */
 %token INT REAL VAR LIST
-%token PLUS MINUS TIMES DIVIDE
-%token EQUALS NOTEQUALS
-%token POW
-%token GREATER LESS GREATER_EQ LESS_EQ
-%token LPAREN RPAREN
-%token LBRACKET RBRACKET
+%token PLUS MINUS TIMES DIVIDE INTDIV
+%token ASSIGNS NOTEQUALS EQUALS_EQ
+%token POW GREATER LESS GREATER_EQ LESS_EQ
+%token LPAREN RPAREN LBRACKET RBRACKET
 %token ERR
 
 /* Regular Expressions for Tokens */
@@ -19,11 +17,13 @@ VAR             [a-zA-Z][a-zA-Z0-9]*
 LIST            list
 POW             \^
 NOTEQUALS       !=
+EQUALS_EQ       ==
 EQUALS          =
 PLUS            \+
 MINUS           -
 TIMES           \*
 DIVIDE          /
+INTDIV          //
 GREATER         >
 LESS            <
 GREATER_EQ      >=
@@ -43,10 +43,12 @@ WHITESPACE      [ \t\n]+  /* Matches one or more spaces, tabs, or newline charac
 {LIST}          { return LIST; }
 {POW}           { return POW; }
 {NOTEQUALS}     { return NOTEQUALS; }
+{EQUALS_EQ}     { return EQUALS_EQ; }
 {EQUALS}        { return EQUALS; }
 {PLUS}          { return PLUS; }
 {MINUS}         { return MINUS; }
 {TIMES}         { return TIMES; }
+{INTDIV}        { return INTDIV; }
 {DIVIDE}        { return DIVIDE; }
 {GREATER}       { return GREATER; }
 {LESS}          { return LESS; }

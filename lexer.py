@@ -1,17 +1,14 @@
 import sys
 from ply import lex
 
-def parse_lex_file(lex_file_path):
-    tokens = []
-    with open(lex_file_path, 'r') as f:
-        for line in f:
-            if line.startswith('%token'):
-                tokens.extend(line.split()[1:])
-    return tokens
+# Directly define the tokens as a list instead of reading from the lex file
+tokens = [
+    'REAL', 'INT', 'VAR', 'LIST', 'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'INTDIV',
+    'ASSIGNS', 'NOTEQUALS', 'EQUALS_EQ', 'POW', 'GREATER', 'LESS', 'GREATER_EQ',
+    'LESS_EQ', 'LPAREN', 'RPAREN', 'LBRACKET', 'RBRACKET', 'ERR'
+]
 
-tokens = parse_lex_file('shadowSparks.lex')
-
-# Define the token rules
+# Define the token rules (regex patterns)
 def t_REAL(t):
     r'(\d+\.\d*|\.\d+)([eE][+-]?\d+)?'
     return t
@@ -37,7 +34,11 @@ def t_NOTEQUALS(t):
     r'!='
     return t
 
-def t_EQUALS(t):
+def t_EQUALS_EQ(t):
+    r'=='
+    return t
+
+def t_ASSIGNS(t):
     r'='
     return t
 
@@ -53,33 +54,28 @@ def t_TIMES(t):
     r'\*'
     return t
 
-def t_DIVIDE(t):
-    r'/'
-    return t
-
 def t_INTDIV(t):
     r'//'
+    return t
+
+def t_DIVIDE(t):
+    r'/'
     return t
 
 # Handling comparison operators
 def t_GREATER_EQ(t):
     r'>='
     return t
+def t_GREATER(t):
+    r'>'
+    return t
 
 def t_LESS_EQ(t):
     r'<='
     return t
 
-def t_GREATER(t):
-    r'>'
-    return t
-
 def t_LESS(t):
     r'<'
-    return t
-
-def t_EQUALS_EQ(t):
-    r'=='
     return t
 
 def t_LPAREN(t):
@@ -123,8 +119,10 @@ def format_token(token):
     elif token.type == 'DIVIDE':
         return '/'  
     elif token.type == 'INTDIV':
-        return '/ /'
-    elif token.type == 'EQUALS':
+        return '///INT_DIVISION'  
+    elif token.type == 'EQUALS_EQ':
+        return '==/EQUAL'  
+    elif token.type == 'ASSIGNS':
         return '=/='
     elif token.type == 'NOTEQUALS':
         return '!=/!='  
@@ -138,8 +136,6 @@ def format_token(token):
         return '< /LESS'
     elif token.type == 'LESS_EQ':
         return '<=/LESS_EQ'
-    elif token.type == 'EQUALS_EQ':
-        return '==/ERR'
     elif token.type == 'LPAREN':
         return '(/LPAREN'
     elif token.type == 'RPAREN':
