@@ -1,7 +1,6 @@
 import sys
 from ply import lex
 
-# Directly define the tokens as a list instead of reading from the lex file
 tokens = [
     'REAL', 'INT', 'VAR', 'LIST', 'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'INTDIV',
     'ASSIGNS', 'NOTEQUALS', 'EQUALS_EQ', 'POW', 'GREATER', 'LESS', 'GREATER_EQ',
@@ -62,7 +61,6 @@ def t_DIVIDE(t):
     r'/'
     return t
 
-# Handling comparison operators
 def t_GREATER_EQ(t):
     r'>='
     return t
@@ -94,7 +92,6 @@ def t_RBRACKET(t):
     r'\]'
     return t
 
-# Ignore spaces and tabs
 t_ignore = ' \t'
 
 # Error handling for unrecognized characters
