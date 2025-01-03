@@ -1,11 +1,15 @@
 import sys
 from ply import lex
 
-tokens = [
-    'REAL', 'INT', 'VAR', 'LIST', 'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'INTDIV',
-    'ASSIGNS', 'NOTEQUALS', 'EQUALS_EQ', 'POW', 'GREATER', 'LESS', 'GREATER_EQ',
-    'LESS_EQ', 'LPAREN', 'RPAREN', 'LBRACKET', 'RBRACKET', 'ERR'
-]
+def parse_lex_file(lex_file_path):
+    tokens = []
+    with open(lex_file_path, 'r') as f:
+        for line in f:
+            if line.startswith('%token'):
+                tokens.extend(line.split()[1:])
+    return tokens
+
+tokens = parse_lex_file('shadowSparks.lex')
 
 # Define the token rules (regex patterns)
 def t_REAL(t):
