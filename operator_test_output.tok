@@ -1,0 +1,32 @@
++/+
+-/-
+*/*
+/
+///INT_DIVISION
+^/POW
+>/GREATER
+>=/GREATER_EQ
+< /LESS
+<=/LESS_EQ
+==/EQUAL
+!=/!=
+(/LPAREN
+)/RPAREN
+=/=
++/+ 3/INT
+-/- 5/INT
+*/* 6/INT
+/ 2/INT
+///INT_DIVISION 4/INT
+^/POW 2/INT
+(/LPAREN 3/INT +/+ 5/INT )/RPAREN
+(/LPAREN 2/INT */* 3/INT )/RPAREN
+x/VAR =/= 10/INT
+y/VAR =/= 20/INT
+z/VAR =/= x/VAR +/+ y/VAR
+a/VAR =/= b/VAR -/- 3/INT
+(/LPAREN 10/INT >/GREATER 5/INT )/RPAREN
+(/LPAREN 5/INT < /LESS 10/INT )/RPAREN
+(/LPAREN 4/INT ==/EQUAL 4/INT )/RPAREN
+(/LPAREN 3/INT !=/!= 4/INT )/RPAREN
+x/VAR =/= (/LPAREN a/VAR */* b/VAR )/RPAREN
