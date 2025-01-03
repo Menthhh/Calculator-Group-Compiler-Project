@@ -12,7 +12,7 @@
 
 /* Regular Expressions for Tokens */
 REAL            [0-9]+\.[0-9]*([eE][+-]?[0-9]+)?|\.[0-9]+([eE][+-]?[0-9]+)?
-INT             [0-9]+
+INT             [1-9][0-9]*|0
 VAR             [a-zA-Z][a-zA-Z0-9]*
 LIST            list
 POW             \^

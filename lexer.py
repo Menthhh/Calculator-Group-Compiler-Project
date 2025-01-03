@@ -17,7 +17,7 @@ def t_REAL(t):
     return t
 
 def t_INT(t):
-    r'\d+'
+    r'[1-9]\d*|0'
     return t
 
 def t_POW(t):
@@ -25,7 +25,7 @@ def t_POW(t):
     return t
 
 def t_LIST(t):
-    r'list'
+    r'list\b'
     t.type = 'LIST'
     return t
 
