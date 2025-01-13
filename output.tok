@@ -5,6 +5,6 @@ Syntax error at line 3, pos 2: Unexpected token NUM
 (10*x)
 Undefined variable y at line 6, pos 3
 (x!=5)
-((2+5))
+(2+5)
 (x=(list[2]))
 ((x[0])+(x[1]))
