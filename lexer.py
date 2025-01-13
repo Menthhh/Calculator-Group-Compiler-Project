@@ -260,7 +260,6 @@ def process_file(input_file, output_file, symbol_table_file):
                     continue
                 
                 try:
-                    print(line)
                     result = parser.parse(line, lexer=lexer)
                     f_out.write(f"{result}\n")
                 except (SyntaxError, NameError, TypeError) as e:
