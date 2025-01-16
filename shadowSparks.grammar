@@ -1,0 +1,37 @@
+<expression> ::= <arithmetic_expr>
+            | <assignment_expr>
+            | <comparison_expr>
+            | <list_access>
+
+<arithmetic_expr> ::= <term>
+                | <arithmetic_expr> <PLUS> <term>
+                | <arithmetic_expr> <MINUS> <term>
+
+<term> ::= <factor>
+    | <term> <TIMES> <factor>
+    | <term> <DIVIDE> <factor>
+    | <term> <INTDIV> <factor>
+
+<factor> ::= <atom>
+        | <factor> <POW> <atom>
+
+<atom> ::= <INT>
+    | <REAL>
+    | <VAR>
+    | <list_access>
+    | <LPAREN> <expression> <RPAREN>
+
+<assignment_expr> ::= <VAR> <ASSIGNS> <expression>
+                | <VAR> <ASSIGNS> <list_expr>
+                | <list_access> <ASSIGNS> <expression>
+
+<comparison_expr> ::= <expression> <EQUALS_EQ> <expression>
+                | <expression> <NOTEQUALS> <expression>
+                | <expression> <GREATER> <expression>
+                | <expression> <GREATER_EQ> <expression>
+                | <expression> <LESS> <expression>
+                | <expression> <LESS_EQ> <expression>
+
+<list_expr> ::= <LIST> <LBRACKET> <expression> <RBRACKET>
+
+<list_access> ::= <VAR> <LBRACKET> <expression> <RBRACKET>
