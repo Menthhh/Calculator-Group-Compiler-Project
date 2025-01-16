@@ -38,7 +38,6 @@ def t_POW(t):
 
 def t_LIST(t):
     r'list\b'
-
     t.type = 'LIST'
     set_pos()
     return t
@@ -221,11 +220,6 @@ def p_list_expr(p):
 def p_list_access(p):
     '''list_access : VAR LBRACKET expression RBRACKET'''
     
-    # var_entry = symbol_table.get_entry(p[1])
-    # if not var_entry:
-    #     raise NameError(f"Undefined variable {p[1]} at line {current_line}, pos {current_pos}")
-    # if var_entry['type'] != 'list':
-    #     raise TypeError(f"Variable {p[1]} is not a list at line {current_line}, pos {current_pos}")
     p[0] = f"({p[1]}[{p[3]}])"
 
 def p_error(p):
