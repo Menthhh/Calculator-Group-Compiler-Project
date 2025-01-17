@@ -1,2 +1,2 @@
 lexeme,line_number,start_pos,length,type,value
-x,9,6,1,VAR,(list[2])
+x,9,1,1,list,(list[(2)])

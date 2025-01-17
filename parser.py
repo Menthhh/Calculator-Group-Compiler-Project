@@ -5,6 +5,7 @@ from symbolTable import SymbolTable
 symbol_table = SymbolTable()
 current_line = 1
 current_pos = 0
+instanceType = None
 
 def set_pos():
     global current_pos
@@ -23,107 +24,128 @@ tokens = parse_lex_file('shadowSparks.lex')
 # Define the token rules (regex patterns)
 def t_REAL(t):
     r'(\d+\.\d*|\.\d+)([eE][+-]?\d+)?'
-    set_pos()
+    set_pos()    
+    t.pos = current_pos
     return t
 
 def t_INT(t):
     r'[1-9]\d*|0'
-    set_pos()
+    set_pos()    
+    t.pos = current_pos
     return t
 
 def t_POW(t):
     r'\^'
-    set_pos()
+    set_pos()    
+    t.pos = current_pos
     return t
 
 def t_LIST(t):
     r'list\b'
     t.type = 'LIST'
-    set_pos()
+    set_pos()    
+    t.pos = current_pos
     return t
 
 def t_VAR(t):
     r'[a-zA-Z][a-zA-Z0-9]*'
-    set_pos()
+    set_pos()    
+    t.pos = current_pos
     return t
 
 def t_NOTEQUALS(t):
     r'!='
-    set_pos()
+    set_pos()    
+    t.pos = current_pos
     return t
 
 def t_EQUALS_EQ(t):
     r'=='
-    set_pos()
+    set_pos()    
+    t.pos = current_pos
     return t
 
 def t_ASSIGNS(t):
     r'='
-    set_pos()
+    set_pos()    
+    t.pos = current_pos
     return t
 
 def t_PLUS(t):
     r'\+'
-    set_pos()
+    set_pos()    
+    t.pos = current_pos
     return t
 
 def t_MINUS(t):
     r'-'
-    set_pos()
+    set_pos()    
+    t.pos = current_pos
     return t
 
 def t_TIMES(t):
     r'\*'
-    set_pos()
+    set_pos()    
+    t.pos = current_pos
     return t
 
 def t_INTDIV(t):
     r'//'
-    set_pos()
+    set_pos()    
+    t.pos = current_pos
     return t
 
 def t_DIVIDE(t):
     r'/'
-    set_pos()
+    set_pos()    
+    t.pos = current_pos
     return t
 
 def t_GREATER_EQ(t):
     r'>='
-    set_pos()
+    set_pos()    
+    t.pos = current_pos
     return t
 def t_GREATER(t):
     r'>'
-    set_pos()
+    set_pos()    
+    t.pos = current_pos
     return t
 
 def t_LESS_EQ(t):
     r'<='
-    set_pos()
+    set_pos()    
+    t.pos = current_pos
     return t
 
 def t_LESS(t):
     r'<'
-    set_pos()
+    set_pos()    
+    t.pos = current_pos
     return t
 
 def t_LPAREN(t):
     r'\('
-    set_pos()
+    set_pos()    
+    t.pos = current_pos
     return t
 
 def t_RPAREN(t):
     r'\)'
-    set_pos()
+    set_pos()    
+    t.pos = current_pos
     return t
 
 def t_LBRACKET(t):
     r'\['
-    set_pos()
+    set_pos()    
+    t.pos = current_pos
     return t
 
 def t_RBRACKET(t):
     r'\]'
-    set_pos()
+    set_pos()    
+    t.pos = current_pos
     return t
 
 t_ignore = ' \t'
@@ -179,6 +201,8 @@ def p_atom(p):
     if len(p) == 2:
         if isinstance(p[1], str):
             p[0] = p[1]
+            global instanceType
+            instanceType = p.slice[1].type
             if p.slice[1].type == 'VAR':
                 if not symbol_table.get_entry(p[1]):
                     raise NameError(f"Undefined variable {p[1]} at line {current_line}, pos {current_pos}")
@@ -195,12 +219,12 @@ def p_assignment_expr(p):
                       | VAR ASSIGNS list_expr
                       | list_access ASSIGNS expression'''
     p[0] = f"({p[1]}{p[2]}{p[3]})"
-    if isinstance(p[1], str): 
-        symbol_table.add_entry(p[1], current_line, current_pos, len(p[1]), 
-                              'VAR' if not isinstance(p[3], list) else 'list', p[3])
+    if isinstance(p[1], str):
+        global instanceType
+        symbol_table.add_entry(p[1], current_line, p.slice[1].pos, len(p[1]), instanceType, p[3])
     else: 
         var_name = p[1].split('[')[0]
-        symbol_table.add_entry(var_name, current_line, current_pos, len(var_name), 'list', p[3])
+        symbol_table.add_entry(var_name, current_line, p.slice[1].pos, len(var_name), 'list', p[3])
 
 def p_comparison_expr(p):
     '''comparison_expr : expression EQUALS_EQ expression
@@ -215,12 +239,16 @@ def p_comparison_expr(p):
 def p_list_expr(p):
     '''list_expr : LIST LBRACKET expression RBRACKET'''
     
-    p[0] = f"(list[{p[3]}])"
+    p[0] = f"(list[({p[3]})])"
+    global instanceType
+    instanceType = 'list'
 
 def p_list_access(p):
     '''list_access : VAR LBRACKET expression RBRACKET'''
     
-    p[0] = f"({p[1]}[{p[3]}])"
+    p[0] = f"({p[1]}[({p[3]})])"
+    global instanceType
+    instanceType = 'list'
 
 def p_error(p):
     if p:
