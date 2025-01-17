@@ -14,7 +14,10 @@ Running the Program:
    a) Open command prompt
    b) Navigate to the program directory
    c) Run the program:
-    python parser.py input.txt shadowSparks.tok shadowSparks.csv
+    For Lexical Analyzer output:
+      python parser.py input.txt shadowSparks.tok
+    For Syntactic and semantic analyzer output:
+      python parser.py input.txt shadowSparks.bracket shadowSparks.csv
 
 3. Output:
    - The program will generate output.tok file

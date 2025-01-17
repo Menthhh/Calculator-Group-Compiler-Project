@@ -262,7 +262,54 @@ lexer = lex.lex()
 # Create the parser
 parser = yacc.yacc()
 
-def process_file(input_file, output_file, symbol_table_file):
+def format_token(token):
+    """Format token according to the required output format"""
+    if token.type == 'PLUS':
+        return '+/+'  
+    elif token.type == 'MINUS':
+        return '-/-'
+    elif token.type == 'TIMES':
+        return '*/*'
+    elif token.type == 'DIVIDE':
+        return '/'  
+    elif token.type == 'INTDIV':
+        return '///INT_DIVISION'  
+    elif token.type == 'EQUALS_EQ':
+        return '==/EQUAL'  
+    elif token.type == 'ASSIGNS':
+        return '=/='
+    elif token.type == 'NOTEQUALS':
+        return '!=/!='  
+    elif token.type == 'POW':
+        return '^/POW'  
+    elif token.type == 'GREATER':
+        return '>/GREATER'
+    elif token.type == 'GREATER_EQ':
+        return '>=/GREATER_EQ'
+    elif token.type == 'LESS':
+        return '< /LESS'
+    elif token.type == 'LESS_EQ':
+        return '<=/LESS_EQ'
+    elif token.type == 'LPAREN':
+        return '(/LPAREN'
+    elif token.type == 'RPAREN':
+        return ')/RPAREN'
+    elif token.type == 'LBRACKET':
+        return '[/LBRACKET'
+    elif token.type == 'RBRACKET':
+        return ']/RBRACKET'
+    elif token.type == 'LIST':
+        return 'list/list'
+    elif token.type == 'VAR':
+        return f"{token.value}/VAR"
+    elif token.type == 'INT':
+        return f"{token.value}/INT"
+    elif token.type == 'REAL':
+        return f"{token.value}/REAL"
+    else:
+        return f"{token.value}/{token.type}"
+
+def process_file_parser(input_file, output_file, symbol_table_file):
     global current_line, current_pos
     
     try:
@@ -292,13 +339,40 @@ def process_file(input_file, output_file, symbol_table_file):
                 
     except IOError as e:
         print(f"Error writing to output file: {str(e)}")
+    
+def process_file_lex(input_file, output_file):
+    try:
+        with open(input_file, 'r') as f:
+            lines = f.readlines()
+    except FileNotFoundError:
+        print(f"Error: Could not open input file '{input_file}'")
+        return
+
+    try:
+        with open(output_file, 'w') as f:
+            for line in lines:
+                line = line.strip()
+                if not line:
+                    continue
+                
+                lexer.input(line)
+                tokens = []
+                
+                while True:
+                    tok = lexer.token()
+                    if not tok:
+                        break
+                    tokens.append(format_token(tok))
+                
+                f.write(' '.join(tokens) + '\n')
+    except IOError:
+        print(f"Error: Could not write to output file '{output_file}'")
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
-        print("Usage: python combined.py input_file output_file symbol_table_file")
-        sys.exit(1)
-    
     input_file = sys.argv[1]
     output_file = sys.argv[2]
-    symbol_table_file = sys.argv[3]
-    process_file(input_file, output_file, symbol_table_file)
+    if len(sys.argv) == 3:
+        process_file_lex(input_file, output_file)
+    else:
+        symbol_table_file = sys.argv[3]
+        process_file_parser(input_file, output_file, symbol_table_file)

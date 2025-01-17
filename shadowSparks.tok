@@ -5,6 +5,6 @@ x/VAR =/= 5/INT
 10/INT */* x/VAR
 x/VAR =/= y/VAR
 x/VAR !=/!= 5/INT
-X/VAR #/ERR +/+ 8/INT
 (/LPAREN 2/INT +/+ 5/INT )/RPAREN
 x/VAR =/= list/list [/LBRACKET 2/INT ]/RBRACKET
+x/VAR [/LBRACKET 0/INT ]/RBRACKET +/+ x/VAR [/LBRACKET 1/INT ]/RBRACKET
